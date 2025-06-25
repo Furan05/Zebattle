@@ -1,0 +1,177 @@
+<div class="container mt-4">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h1>🏆 Tournois Groudonbattle</h1>
+    <div>
+      <div class="btn-group" role="group">
+        <%= form_with url: generate_auto_tournament_path, method: :post, local: true, class: 'd-inline' do |form| %>
+          <%= form.submit 'Tournoi Classique', class: 'btn btn-success', title: 'Génération avec noms prédéfinis' %>
+        <% end %>
+        <%= form_with url: generate_faker_tournament_path, method: :post, local: true, class: 'd-inline' do |form| %>
+          <%= form.submit 'Tournoi Faker 🎲', class: 'btn btn-primary', title: 'Génération avec noms aléatoires créatifs' %>
+        <% end %>
+      </div>
+      <%= link_to 'Gérer les équipes', teams_path, class: 'btn btn-secondary ms-2' %>
+    </div>
+  </div>
+
+  <!-- Statistiques rapides -->
+  <div class="row mb-4">
+    <div class="col-md-3">
+      <div class="card bg-primary text-white">
+        <div class="card-body text-center">
+          <h4><%= Team.count %></h4>
+          <p class="mb-0">Équipes totales</p>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="card bg-success text-white">
+        <div class="card-body text-center">
+          <h4><%= @complete_teams %></h4>
+          <p class="mb-0">Équipes complètes</p>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="card bg-info text-white">
+        <div class="card-body text-center">
+          <h4><%= Player.count %></h4>
+          <p class="mb-0">Joueurs totaux</p>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="card bg-warning text-white">
+        <div class="card-body text-center">
+          <h4><%= @tournaments.count %></h4>
+          <p class="mb-0">Tournois organisés</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Explication des modes de génération -->
+  <div class="card mb-4">
+    <div class="card-header">
+      <h5 class="mb-0">🎮 Modes de génération de tournois</h5>
+    </div>
+    <div class="card-body">
+      <div class="row">
+        <div class="col-md-6">
+          <h6>🎯 Mode Classique</h6>
+          <ul class="small">
+            <li><strong>Équipes :</strong> Dragons de Feu, Titans de Glace, etc.</li>
+            <li><strong>Joueurs :</strong> Aragorn le Brave, Legolas l'Intrépide</li>
+            <li><strong>Style :</strong> Fantasy médiéval cohérent</li>
+          </ul>
+        </div>
+        <div class="col-md-6">
+          <h6>🎲 Mode Faker</h6>
+          <ul class="small">
+            <li><strong>Équipes :</strong> Noms complètement aléatoires et créatifs</li>
+            <li><strong>Joueurs :</strong> Mélanges de fantasy, superhéros, jeux vidéo</li>
+            <li><strong>Style :</strong> Surprenant et varié à chaque génération</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Alerte si pas assez d'équipes -->
+  <% if @complete_teams < 8 %>
+    <div class="alert alert-info">
+      <h5>💡 Génération automatique disponible</h5>
+      <p class="mb-0">
+        Vous avez actuellement <strong><%= @complete_teams %></strong> équipe(s) complète(s).
+        Les générateurs automatiques créeront 8 nouvelles équipes complètes pour un tournoi instantané !
+        Choisissez entre le <strong>mode Classique</strong> (thème fantasy) ou le <strong>mode Faker</strong> (noms aléatoires créatifs).
+      </p>
+    </div>
+  <% end %>
+
+  <!-- Liste des tournois -->
+  <% if @tournaments.any? %>
+    <h3>Tournois organisés</h3>
+    <% @tournaments.each do |tournament| %>
+      <div class="card mb-4">
+        <div class="card-header d-flex justify-content-between align-items-center">
+          <h4 class="mb-0">
+            <%= link_to tournament.name, tournament, class: 'text-decoration-none' %>
+          </h4>
+          <div>
+            <span class="badge bg-<%= tournament.status == 'completed' ? 'success' : 'warning' %> fs-6">
+              <%= tournament.status == 'completed' ? 'Terminé' : 'En cours' %>
+            </span>
+            <small class="text-muted ms-2">
+              <%= tournament.created_at.strftime('%d/%m/%Y à %H:%M') %>
+            </small>
+          </div>
+        </div>
+
+        <% if tournament.status == 'completed' %>
+          <div class="card-body">
+            <div class="row">
+              <div class="col-md-6">
+                <h6>🥇 Top 3 du tournoi</h6>
+                <% tournament.ranking.first(3).each_with_index do |(team, stats), index| %>
+                  <div class="d-flex justify-content-between align-items-center py-1">
+                    <span>
+                      <%= ['🥇', '🥈', '🥉'][index] %>
+                      <%= team.name %>
+                    </span>
+                    <span class="badge bg-primary"><%= stats[:points] %> pts</span>
+                  </div>
+                <% end %>
+              </div>
+              <div class="col-md-6">
+                <h6>📊 Statistiques</h6>
+                <small class="text-muted">
+                  • <%= tournament.matches.count %> matchs joués<br>
+                  • <%= tournament.matches.sum(:team1_score) + tournament.matches.sum(:team2_score) %> kills au total<br>
+                  • <%= tournament.ranking.count %> équipes participantes
+                </small>
+              </div>
+            </div>
+            <div class="text-end mt-2">
+              <%= link_to 'Voir les détails', tournament, class: 'btn btn-outline-primary btn-sm' %>
+            </div>
+          </div>
+        <% else %>
+          <div class="card-body">
+            <p class="text-muted mb-0">Tournoi en préparation...</p>
+          </div>
+        <% end %>
+      </div>
+    <% end %>
+  <% else %>
+    <div class="text-center py-5">
+      <h3 class="text-muted">Aucun tournoi organisé</h3>
+      <p class="text-muted mb-4">Créez votre premier tournoi pour voir les équipes s'affronter !</p>
+
+      <div class="row justify-content-center">
+        <div class="col-md-6">
+          <div class="card">
+            <div class="card-body">
+              <h5>🎯 Tournoi Classique</h5>
+              <p class="small text-muted">Équipes avec thèmes fantasy prédéfinis</p>
+              <%= form_with url: generate_auto_tournament_path, method: :post, local: true, class: 'd-inline' do |form| %>
+                <%= form.submit 'Générer Tournoi Classique', class: 'btn btn-success' %>
+              <% end %>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="card">
+            <div class="card-body">
+              <h5>🎲 Tournoi Faker</h5>
+              <p class="small text-muted">Équipes et joueurs complètement aléatoires</p>
+              <%= form_with url: generate_faker_tournament_path, method: :post, local: true, class: 'd-inline' do |form| %>
+                <%= form.submit 'Générer Tournoi Faker', class: 'btn btn-primary' %>
+              <% end %>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  <% end %>
+</div>

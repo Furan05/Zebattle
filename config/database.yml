@@ -1,0 +1,20 @@
+default: &default
+  adapter: mysql2
+  encoding: utf8mb4
+  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+  username: rails_user
+  password: password123
+  socket: /tmp/mysql.sock
+  host: localhost
+
+development:
+  <<: *default
+  database: groudonbattle_development
+
+test:
+  <<: *default
+  database: groudonbattle_test
+
+production:
+  <<: *default
+  database: groudonbattle_production

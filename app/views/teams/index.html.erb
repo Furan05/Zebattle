@@ -1,0 +1,36 @@
+<div class="container mt-4">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h1>Équipes Groudonbattle</h1>
+    <div>
+      <%= link_to 'Nouvelle équipe', new_team_path, class: 'btn btn-primary' %>
+      <%= link_to 'Nouveau joueur', new_player_path, class: 'btn btn-success' %>
+    </div>
+  </div>
+
+  <% if @teams.any? %>
+    <div class="row">
+      <% @teams.each do |team| %>
+        <div class="col-md-4 mb-3">
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title"><%= team.name %></h5>
+              <p class="card-text">
+                <strong>Ville:</strong> <%= team.city %><br>
+                <strong>Joueurs:</strong> <%= team.player_count %>/11
+              </p>
+              <%= link_to 'Voir', team, class: 'btn btn-info btn-sm' %>
+              <%= link_to 'Modifier', edit_team_path(team), class: 'btn btn-warning btn-sm' %>
+              <%= link_to 'Supprimer', team, method: :delete,
+                          confirm: 'Êtes-vous sûr?', class: 'btn btn-danger btn-sm' %>
+            </div>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  <% else %>
+    <div class="text-center">
+      <p class="text-muted">Aucune équipe créée pour le moment.</p>
+      <%= link_to 'Créer la première équipe', new_team_path, class: 'btn btn-primary' %>
+    </div>
+  <% end %>
+</div>

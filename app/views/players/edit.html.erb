@@ -1,0 +1,53 @@
+<div class="container mt-4">
+  <h1>Modifier le joueur</h1>
+
+  <div class="row">
+    <div class="col-md-8">
+      <%= form_with model: [@team, @player], local: true, class: 'row g-3' do |form| %>
+        <% if @player.errors.any? %>
+          <div class="col-12">
+            <div class="alert alert-danger">
+              <h5>Erreurs:</h5>
+              <ul class="mb-0">
+                <% @player.errors.full_messages.each do |message| %>
+                  <li><%= message %></li>
+                <% end %>
+              </ul>
+            </div>
+          </div>
+        <% end %>
+
+        <div class="col-md-6">
+          <%= form.label :name, "Nom du joueur", class: 'form-label' %>
+          <%= form.text_field :name, class: 'form-control' %>
+        </div>
+
+        <div class="col-md-6">
+          <%= form.label :position, "Poste", class: 'form-label' %>
+          <%= form.select :position,
+                          options_for_select(Player::POSITIONS.map { |p| [p, p] }, @player.position),
+                          {},
+                          { class: 'form-select' } %>
+        </div>
+
+        <div class="col-12">
+          <%= form.submit 'Mettre à jour', class: 'btn btn-success' %>
+          <%= link_to 'Voir l\'équipe', @team, class: 'btn btn-info' %>
+          <%= link_to 'Annuler', @team, class: 'btn btn-secondary' %>
+        </div>
+      <% end %>
+    </div>
+
+    <div class="col-md-4">
+      <div class="card">
+        <div class="card-body">
+          <h6 class="card-title">Équipe : <%= @team.name %></h6>
+          <p class="card-text">
+            <strong>Ville:</strong> <%= @team.city %><br>
+            <strong>Joueurs:</strong> <%= @team.player_count %>/11
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

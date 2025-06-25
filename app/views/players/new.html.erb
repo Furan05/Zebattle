@@ -1,70 +1,181 @@
-<div class="container mt-4">
-  <h1>Nouveau joueur - <%= @team.name %></h1>
+<div class="container">
+  <!-- Page Title -->
+  <div class="text-center mb-5">
+    <h1 class="page-title animate-on-scroll">
+      <i class="fas fa-user-plus me-3"></i>
+      Nouveau Joueur
+    </h1>
+    <p class="animate-on-scroll" style="font-size: 1.2rem; opacity: 0.8; margin-bottom: 10px;">
+      Ajoutez un guerrier à l'équipe
+    </p>
+    <div class="animate-on-scroll">
+      <span class="badge" style="background: var(--primary-gradient); color: white; font-size: 1rem; padding: 8px 20px;">
+        <i class="fas fa-shield-alt me-2"></i>
+        <%= @team.name %>
+      </span>
+    </div>
+  </div>
 
-  <div class="row">
-    <div class="col-md-8">
-      <%= form_with model: [@team, @player], local: true, class: 'row g-3' do |form| %>
-        <% if @player.errors.any? %>
-          <div class="col-12">
-            <div class="alert alert-danger">
-              <h5>Erreurs:</h5>
-              <ul class="mb-0">
-                <% @player.errors.full_messages.each do |message| %>
-                  <li><%= message %></li>
+  <div class="row g-4">
+    <!-- Form Section -->
+    <div class="col-lg-8">
+      <div class="card animate-on-scroll">
+        <div class="card-header">
+          <h5 class="mb-0" style="font-weight: bold;">
+            <i class="fas fa-user-edit me-2" style="color: #667eea;"></i>
+            Informations du Joueur
+          </h5>
+        </div>
+        <div class="card-body p-4">
+          <%= form_with model: [@team, @player], local: true do |form| %>
+            <% if @player.errors.any? %>
+              <div class="alert alert-danger mb-4">
+                <h5 class="mb-3">
+                  <i class="fas fa-exclamation-triangle me-2"></i>
+                  Erreurs détectées:
+                </h5>
+                <ul class="mb-0">
+                  <% @player.errors.full_messages.each do |message| %>
+                    <li><%= message %></li>
+                  <% end %>
+                </ul>
+              </div>
+            <% end %>
+
+            <div class="row g-4">
+              <div class="col-md-6">
+                <%= form.label :name, class: 'form-label' do %>
+                  <i class="fas fa-user me-2" style="color: #667eea;"></i>
+                  Nom du Guerrier
                 <% end %>
-              </ul>
+                <%= form.text_field :name, class: 'form-control',
+                                    placeholder: 'Ex: Aragorn le Brave, Legolas l\'Intrépide...' %>
+                <div class="form-text" style="opacity: 0.7;">
+                  <i class="fas fa-magic me-1"></i>
+                  Choisissez un nom épique pour votre guerrier
+                </div>
+              </div>
+
+              <div class="col-md-6">
+                <%= form.label :position, class: 'form-label' do %>
+                  <i class="fas fa-chess me-2" style="color: #4facfe;"></i>
+                  Spécialisation
+                <% end %>
+                <%= form.select :position,
+                                options_for_select(Player::POSITIONS.map { |p| [p, p] }),
+                                { prompt: 'Sélectionnez une spécialisation' },
+                                { class: 'form-select' } %>
+                <div class="form-text" style="opacity: 0.7;">
+                  <i class="fas fa-balance-scale me-1"></i>
+                  Chaque rôle est crucial pour l'équilibre
+                </div>
+              </div>
             </div>
-          </div>
-        <% end %>
 
-        <div class="col-md-6">
-          <%= form.label :name, "Nom du joueur", class: 'form-label' %>
-          <%= form.text_field :name, class: 'form-control',
-                              placeholder: 'Ex: Aragorn' %>
-        </div>
+            <!-- Role Descriptions -->
+            <div class="mt-4">
+              <h6 class="mb-3" style="font-weight: bold; color: #667eea;">
+                <i class="fas fa-info-circle me-2"></i>
+                Rôles Disponibles
+              </h6>
+              <div class="row g-3">
+                <div class="col-md-4">
+                  <div class="text-center p-3" style="background: rgba(240, 147, 251, 0.1); border-radius: 15px; border-left: 4px solid #f093fb;">
+                    <i class="fas fa-heart fa-2x mb-2" style="color: #f093fb;"></i>
+                    <h6 style="font-weight: bold; color: #f093fb;">Heal</h6>
+                    <small style="opacity: 0.8;">Soigneur qui maintient l'équipe en vie avec ses pouvoirs de guérison</small>
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <div class="text-center p-3" style="background: rgba(254, 202, 87, 0.1); border-radius: 15px; border-left: 4px solid #feca57;">
+                    <i class="fas fa-shield fa-2x mb-2" style="color: #feca57;"></i>
+                    <h6 style="font-weight: bold; color: #feca57;">Tank</h6>
+                    <small style="opacity: 0.8;">Défenseur robuste qui absorbe les dégâts et protège ses alliés</small>
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <div class="text-center p-3" style="background: rgba(79, 172, 254, 0.1); border-radius: 15px; border-left: 4px solid #4facfe;">
+                    <i class="fas fa-sword fa-2x mb-2" style="color: #4facfe;"></i>
+                    <h6 style="font-weight: bold; color: #4facfe;">DPS</h6>
+                    <small style="opacity: 0.8;">Attaquant redoutable qui inflige des dégâts massifs aux ennemis</small>
+                  </div>
+                </div>
+              </div>
+            </div>
 
-        <div class="col-md-6">
-          <%= form.label :position, "Poste", class: 'form-label' %>
-          <%= form.select :position,
-                          options_for_select(Player::POSITIONS.map { |p| [p, p] }),
-                          { prompt: 'Sélectionnez un poste' },
-                          { class: 'form-select' } %>
+            <div class="d-flex gap-3 justify-content-center mt-4">
+              <%= form.submit 'Ajouter le Guerrier', class: 'btn btn-success btn-lg' %>
+              <%= link_to @team, class: 'btn btn-secondary btn-lg' do %>
+                <i class="fas fa-arrow-left me-2"></i>
+                Retour à l'Équipe
+              <% end %>
+            </div>
+          <% end %>
         </div>
-
-        <div class="col-12">
-          <div class="mb-3">
-            <h6>Postes disponibles :</h6>
-            <ul class="small text-muted">
-              <li><strong>Heal</strong> : Soigneur, maintient l'équipe en vie</li>
-              <li><strong>Tank</strong> : Défenseur, absorbe les dégâts</li>
-              <li><strong>DPS</strong> : Attaquant, inflige les dégâts</li>
-            </ul>
-          </div>
-        </div>
-
-        <div class="col-12">
-          <%= form.submit 'Ajouter le joueur', class: 'btn btn-success' %>
-          <%= link_to 'Annuler', @team, class: 'btn btn-secondary' %>
-        </div>
-      <% end %>
+      </div>
     </div>
 
-    <div class="col-md-4">
-      <div class="card">
+    <!-- Team Info Section -->
+    <div class="col-lg-4">
+      <div class="card animate-on-scroll" style="animation-delay: 0.2s;">
+        <div class="card-header">
+          <h5 class="mb-0" style="font-weight: bold;">
+            <i class="fas fa-shield-alt me-2" style="color: #667eea;"></i>
+            <%= @team.name %>
+          </h5>
+        </div>
         <div class="card-body">
-          <h6 class="card-title">Équipe : <%= @team.name %></h6>
-          <p class="card-text">
-            <strong>Ville:</strong> <%= @team.city %><br>
-            <strong>Joueurs actuels:</strong> <%= @team.player_count %>/11
-          </p>
+          <div class="row text-center mb-3">
+            <div class="col-6">
+              <div style="background: rgba(102, 126, 234, 0.1); border-radius: 15px; padding: 15px;">
+                <i class="fas fa-map-marker-alt fa-2x mb-2" style="color: #667eea;"></i>
+                <div style="font-size: 0.9rem; opacity: 0.8;">Ville</div>
+                <div style="font-weight: bold;"><%= @team.city %></div>
+              </div>
+            </div>
+            <div class="col-6">
+              <div style="background: rgba(79, 172, 254, 0.1); border-radius: 15px; padding: 15px;">
+                <i class="fas fa-users fa-2x mb-2" style="color: #4facfe;"></i>
+                <div style="font-size: 0.9rem; opacity: 0.8;">Joueurs</div>
+                <div style="font-weight: bold;"><%= @team.player_count %>/11</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Progress Bar -->
+          <div class="mb-3">
+            <div style="background: rgba(255, 255, 255, 0.1); border-radius: 10px; height: 8px; overflow: hidden;">
+              <div style="background: var(--success-gradient); height: 100%; width: <%= (@team.player_count.to_f / 11 * 100).round %>%; transition: width 0.3s ease;"></div>
+            </div>
+            <div class="text-center mt-2" style="font-size: 0.9rem; opacity: 0.7;">
+              <%= (@team.player_count.to_f / 11 * 100).round %>% complétée
+            </div>
+          </div>
 
           <% if @team.player_count > 0 %>
-            <h6>Joueurs existants :</h6>
-            <ul class="small">
+            <h6 class="mb-3" style="font-weight: bold; color: #4facfe;">
+              <i class="fas fa-list me-2"></i>
+              Guerriers Actuels
+            </h6>
+            <div class="list-group list-group-flush" style="max-height: 300px; overflow-y: auto;">
+              <% position_colors = { 'Tank' => '#feca57', 'Heal' => '#f093fb', 'DPS' => '#4facfe' } %>
+              <% position_icons = { 'Tank' => 'shield', 'Heal' => 'heart', 'DPS' => 'sword' } %>
               <% @team.players.each do |player| %>
-                <li><%= player.name %> (<%= player.position %>)</li>
+                <div class="list-group-item d-flex justify-content-between align-items-center" style="background: transparent; border: 1px solid rgba(255, 255, 255, 0.1); margin-bottom: 5px; border-radius: 10px;">
+                  <div>
+                    <i class="fas fa-<%= position_icons[player.position] %> me-2" style="color: <%= position_colors[player.position] %>;"></i>
+                    <strong><%= player.name %></strong>
+                  </div>
+                  <span class="badge" style="background: <%= position_colors[player.position] %>; color: white;"><%= player.position %></span>
+                </div>
               <% end %>
-            </ul>
+            </div>
+          <% else %>
+            <div class="text-center py-4">
+              <i class="fas fa-users fa-3x mb-3" style="color: rgba(102, 126, 234, 0.3);"></i>
+              <p style="opacity: 0.7; margin: 0;">Aucun guerrier dans cette équipe</p>
+              <small style="opacity: 0.5;">Ajoutez le premier membre !</small>
+            </div>
           <% end %>
         </div>
       </div>

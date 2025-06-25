@@ -1,76 +1,95 @@
-<div class="container mt-4">
-  <div class="d-flex justify-content-between align-items-center mb-4">
-    <h1>🏆 Tournois Groudonbattle</h1>
-    <div>
-      <div class="btn-group" role="group">
-        <%= form_with url: generate_auto_tournament_path, method: :post, local: true, class: 'd-inline' do |form| %>
-          <%= form.submit 'Tournoi Classique', class: 'btn btn-success', title: 'Génération avec noms prédéfinis' %>
-        <% end %>
-        <%= form_with url: generate_faker_tournament_path, method: :post, local: true, class: 'd-inline' do |form| %>
-          <%= form.submit 'Tournoi Faker 🎲', class: 'btn btn-primary', title: 'Génération avec noms aléatoires créatifs' %>
-        <% end %>
-      </div>
-      <%= link_to 'Gérer les équipes', teams_path, class: 'btn btn-secondary ms-2' %>
+<div class="container">
+  <!-- Page Title -->
+  <div class="text-center mb-5">
+    <h1 class="page-title animate-on-scroll">
+      <i class="fas fa-trophy me-3"></i>
+      Tournois Groudonbattle
+    </h1>
+    <p class="animate-on-scroll" style="font-size: 1.2rem; opacity: 0.8; margin-bottom: 30px;">
+      Organisez des batailles épiques et couronnez les champions
+    </p>
+    <div class="animate-on-scroll">
+      <%= form_with url: generate_auto_tournament_path, method: :post, local: true, class: 'd-inline me-2' do |form| %>
+        <%= form.submit 'Tournoi Classique', class: 'btn btn-success', title: 'Génération avec noms prédéfinis' %>
+      <% end %>
+      <%= form_with url: generate_faker_tournament_path, method: :post, local: true, class: 'd-inline me-2' do |form| %>
+        <%= form.submit 'Tournoi Faker', class: 'btn btn-primary', title: 'Génération avec noms aléatoires créatifs' %>
+      <% end %>
+      <%= link_to teams_path, class: 'btn btn-secondary' do %>
+        <i class="fas fa-users me-2"></i>
+        Gérer les Équipes
+      <% end %>
     </div>
   </div>
 
-  <!-- Statistiques rapides -->
-  <div class="row mb-4">
+  <!-- Stats Section -->
+  <div class="row g-4 mb-5">
     <div class="col-md-3">
-      <div class="card bg-primary text-white">
+      <div class="card animate-on-scroll">
         <div class="card-body text-center">
-          <h4><%= Team.count %></h4>
-          <p class="mb-0">Équipes totales</p>
+          <i class="fas fa-users fa-3x mb-3" style="color: #667eea;"></i>
+          <div style="font-size: 2.5rem; font-weight: 900; background: var(--primary-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;"><%= Team.count %></div>
+          <div style="opacity: 0.8; font-weight: bold;">Équipes Totales</div>
         </div>
       </div>
     </div>
     <div class="col-md-3">
-      <div class="card bg-success text-white">
+      <div class="card animate-on-scroll" style="animation-delay: 0.1s;">
         <div class="card-body text-center">
-          <h4><%= @complete_teams %></h4>
-          <p class="mb-0">Équipes complètes</p>
+          <i class="fas fa-check-circle fa-3x mb-3" style="color: #4facfe;"></i>
+          <div style="font-size: 2.5rem; font-weight: 900; background: var(--success-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;"><%= @complete_teams %></div>
+          <div style="opacity: 0.8; font-weight: bold;">Équipes Complètes</div>
         </div>
       </div>
     </div>
     <div class="col-md-3">
-      <div class="card bg-info text-white">
+      <div class="card animate-on-scroll" style="animation-delay: 0.2s;">
         <div class="card-body text-center">
-          <h4><%= Player.count %></h4>
-          <p class="mb-0">Joueurs totaux</p>
+          <i class="fas fa-user-friends fa-3x mb-3" style="color: #f093fb;"></i>
+          <div style="font-size: 2.5rem; font-weight: 900; background: var(--secondary-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;"><%= Player.count %></div>
+          <div style="opacity: 0.8; font-weight: bold;">Joueurs Totaux</div>
         </div>
       </div>
     </div>
     <div class="col-md-3">
-      <div class="card bg-warning text-white">
+      <div class="card animate-on-scroll" style="animation-delay: 0.3s;">
         <div class="card-body text-center">
-          <h4><%= @tournaments.count %></h4>
-          <p class="mb-0">Tournois organisés</p>
+          <i class="fas fa-trophy fa-3x mb-3" style="color: #feca57;"></i>
+          <div style="font-size: 2.5rem; font-weight: 900; background: linear-gradient(135deg, #feca57 0%, #ff9ff3 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;"><%= @tournaments.count %></div>
+          <div style="opacity: 0.8; font-weight: bold;">Tournois Organisés</div>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- Explication des modes de génération -->
-  <div class="card mb-4">
-    <div class="card-header">
-      <h5 class="mb-0">🎮 Modes de génération de tournois</h5>
-    </div>
-    <div class="card-body">
-      <div class="row">
-        <div class="col-md-6">
-          <h6>🎯 Mode Classique</h6>
-          <ul class="small">
-            <li><strong>Équipes :</strong> Dragons de Feu, Titans de Glace, etc.</li>
-            <li><strong>Joueurs :</strong> Aragorn le Brave, Legolas l'Intrépide</li>
-            <li><strong>Style :</strong> Fantasy médiéval cohérent</li>
+  <!-- Modes de génération -->
+  <div class="row g-4 mb-5">
+    <div class="col-md-6">
+      <div class="card animate-on-scroll" style="border-left: 4px solid #4facfe;">
+        <div class="card-body">
+          <h5 class="mb-3" style="color: #4facfe; font-weight: bold;">
+            <i class="fas fa-shield-alt me-2"></i>
+            Mode Classique
+          </h5>
+          <ul class="list-unstyled">
+            <li class="mb-2"><i class="fas fa-dragon me-2" style="color: #667eea;"></i><strong>Équipes :</strong> Dragons de Feu, Titans de Glace, etc.</li>
+            <li class="mb-2"><i class="fas fa-user-ninja me-2" style="color: #667eea;"></i><strong>Joueurs :</strong> Aragorn le Brave, Legolas l'Intrépide</li>
+            <li class="mb-2"><i class="fas fa-magic me-2" style="color: #667eea;"></i><strong>Style :</strong> Fantasy médiéval cohérent</li>
           </ul>
         </div>
-        <div class="col-md-6">
-          <h6>🎲 Mode Faker</h6>
-          <ul class="small">
-            <li><strong>Équipes :</strong> Noms complètement aléatoires et créatifs</li>
-            <li><strong>Joueurs :</strong> Mélanges de fantasy, superhéros, jeux vidéo</li>
-            <li><strong>Style :</strong> Surprenant et varié à chaque génération</li>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="card animate-on-scroll" style="animation-delay: 0.1s; border-left: 4px solid #f093fb;">
+        <div class="card-body">
+          <h5 class="mb-3" style="color: #f093fb; font-weight: bold;">
+            <i class="fas fa-dice me-2"></i>
+            Mode Faker
+          </h5>
+          <ul class="list-unstyled">
+            <li class="mb-2"><i class="fas fa-random me-2" style="color: #f093fb;"></i><strong>Équipes :</strong> Noms complètement aléatoires et créatifs</li>
+            <li class="mb-2"><i class="fas fa-user-astronaut me-2" style="color: #f093fb;"></i><strong>Joueurs :</strong> Mélanges de fantasy, superhéros, jeux vidéo</li>
+            <li class="mb-2"><i class="fas fa-surprise me-2" style="color: #f093fb;"></i><strong>Style :</strong> Surprenant et varié à chaque génération</li>
           </ul>
         </div>
       </div>
@@ -79,95 +98,146 @@
 
   <!-- Alerte si pas assez d'équipes -->
   <% if @complete_teams < 8 %>
-    <div class="alert alert-info">
-      <h5>💡 Génération automatique disponible</h5>
-      <p class="mb-0">
-        Vous avez actuellement <strong><%= @complete_teams %></strong> équipe(s) complète(s).
-        Les générateurs automatiques créeront 8 nouvelles équipes complètes pour un tournoi instantané !
-        Choisissez entre le <strong>mode Classique</strong> (thème fantasy) ou le <strong>mode Faker</strong> (noms aléatoires créatifs).
-      </p>
+    <div class="card animate-on-scroll mb-5" style="border-left: 4px solid #00f2fe;">
+      <div class="card-body">
+        <h5 class="mb-3" style="color: #00f2fe; font-weight: bold;">
+          <i class="fas fa-lightbulb me-2"></i>
+          Génération Automatique Disponible
+        </h5>
+        <p class="mb-0" style="opacity: 0.9;">
+          Vous avez actuellement <strong style="color: #00f2fe;"><%= @complete_teams %></strong> équipe(s) complète(s).
+          Les générateurs automatiques créeront 8 nouvelles équipes complètes pour un tournoi instantané !
+          Choisissez entre le <strong>mode Classique</strong> (thème fantasy) ou le <strong>mode Faker</strong> (noms aléatoires créatifs).
+        </p>
+      </div>
     </div>
   <% end %>
 
   <!-- Liste des tournois -->
   <% if @tournaments.any? %>
-    <h3>Tournois organisés</h3>
-    <% @tournaments.each do |tournament| %>
-      <div class="card mb-4">
-        <div class="card-header d-flex justify-content-between align-items-center">
-          <h4 class="mb-0">
-            <%= link_to tournament.name, tournament, class: 'text-decoration-none' %>
-          </h4>
-          <div>
-            <span class="badge bg-<%= tournament.status == 'completed' ? 'success' : 'warning' %> fs-6">
-              <%= tournament.status == 'completed' ? 'Terminé' : 'En cours' %>
-            </span>
-            <small class="text-muted ms-2">
-              <%= tournament.created_at.strftime('%d/%m/%Y à %H:%M') %>
-            </small>
-          </div>
-        </div>
+    <div class="mb-4">
+      <h2 class="text-center mb-4" style="font-size: 2.5rem; font-weight: bold; background: var(--primary-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">
+        <i class="fas fa-trophy me-2"></i>
+        Tournois Organisés
+      </h2>
+    </div>
 
-        <% if tournament.status == 'completed' %>
-          <div class="card-body">
-            <div class="row">
-              <div class="col-md-6">
-                <h6>🥇 Top 3 du tournoi</h6>
-                <% tournament.ranking.first(3).each_with_index do |(team, stats), index| %>
-                  <div class="d-flex justify-content-between align-items-center py-1">
-                    <span>
-                      <%= ['🥇', '🥈', '🥉'][index] %>
-                      <%= team.name %>
-                    </span>
-                    <span class="badge bg-primary"><%= stats[:points] %> pts</span>
-                  </div>
+    <div class="row g-4">
+      <% @tournaments.each_with_index do |tournament, index| %>
+        <div class="col-lg-6">
+          <div class="card animate-on-scroll" style="animation-delay: <%= index * 0.1 %>s;">
+            <div class="card-header d-flex justify-content-between align-items-center">
+              <h4 class="mb-0" style="font-weight: bold;">
+                <%= link_to tournament.name, tournament, style: 'color: #667eea; text-decoration: none;' %>
+              </h4>
+              <div class="d-flex align-items-center gap-2">
+                <% if tournament.status == 'completed' %>
+                  <span class="badge" style="background: var(--success-gradient); color: white;">
+                    <i class="fas fa-check-circle me-1"></i>
+                    Terminé
+                  </span>
+                <% else %>
+                  <span class="badge" style="background: var(--secondary-gradient); color: white;">
+                    <i class="fas fa-clock me-1"></i>
+                    En cours
+                  </span>
                 <% end %>
-              </div>
-              <div class="col-md-6">
-                <h6>📊 Statistiques</h6>
-                <small class="text-muted">
-                  • <%= tournament.matches.count %> matchs joués<br>
-                  • <%= tournament.matches.sum(:team1_score) + tournament.matches.sum(:team2_score) %> kills au total<br>
-                  • <%= tournament.ranking.count %> équipes participantes
+                <small style="opacity: 0.7;">
+                  <%= tournament.created_at.strftime('%d/%m/%Y à %H:%M') %>
                 </small>
               </div>
             </div>
-            <div class="text-end mt-2">
-              <%= link_to 'Voir les détails', tournament, class: 'btn btn-outline-primary btn-sm' %>
-            </div>
-          </div>
-        <% else %>
-          <div class="card-body">
-            <p class="text-muted mb-0">Tournoi en préparation...</p>
-          </div>
-        <% end %>
-      </div>
-    <% end %>
-  <% else %>
-    <div class="text-center py-5">
-      <h3 class="text-muted">Aucun tournoi organisé</h3>
-      <p class="text-muted mb-4">Créez votre premier tournoi pour voir les équipes s'affronter !</p>
 
-      <div class="row justify-content-center">
-        <div class="col-md-6">
-          <div class="card">
-            <div class="card-body">
-              <h5>🎯 Tournoi Classique</h5>
-              <p class="small text-muted">Équipes avec thèmes fantasy prédéfinis</p>
-              <%= form_with url: generate_auto_tournament_path, method: :post, local: true, class: 'd-inline' do |form| %>
-                <%= form.submit 'Générer Tournoi Classique', class: 'btn btn-success' %>
-              <% end %>
-            </div>
+            <% if tournament.status == 'completed' %>
+              <div class="card-body">
+                <div class="row">
+                  <div class="col-md-6">
+                    <h6 class="mb-3" style="font-weight: bold; color: #667eea;">
+                      <i class="fas fa-medal me-2"></i>
+                      Top 3 du Tournoi
+                    </h6>
+                    <% tournament.ranking.first(3).each_with_index do |(team, stats), rank_index| %>
+                      <div class="d-flex justify-content-between align-items-center py-2 px-3 mb-2" style="background: rgba(102, 126, 234, 0.1); border-radius: 10px;">
+                        <span>
+                          <i class="<%= ['fas fa-trophy', 'fas fa-medal', 'fas fa-award'][rank_index] %> me-2" style="color: <%= ['#ffd700', '#c0c0c0', '#cd7f32'][rank_index] %>;"></i>
+                          <%= team.name %>
+                        </span>
+                        <span class="badge" style="background: var(--primary-gradient); color: white;"><%= stats[:points] %> pts</span>
+                      </div>
+                    <% end %>
+                  </div>
+                  <div class="col-md-6">
+                    <h6 class="mb-3" style="font-weight: bold; color: #4facfe;">
+                      <i class="fas fa-chart-bar me-2"></i>
+                      Statistiques
+                    </h6>
+                    <div style="background: rgba(79, 172, 254, 0.1); border-radius: 10px; padding: 15px;">
+                      <div class="mb-2">
+                        <i class="fas fa-swords me-2" style="color: #4facfe;"></i>
+                        <strong><%= tournament.matches.count %></strong> matchs joués
+                      </div>
+                      <div class="mb-2">
+                        <i class="fas fa-fire me-2" style="color: #f5576c;"></i>
+                        <strong><%= tournament.matches.sum(:team1_score) + tournament.matches.sum(:team2_score) %></strong> kills au total
+                      </div>
+                      <div>
+                        <i class="fas fa-users me-2" style="color: #667eea;"></i>
+                        <strong><%= tournament.ranking.count %></strong> équipes participantes
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="text-center mt-3">
+                  <%= link_to tournament, class: 'btn btn-outline-primary' do %>
+                    <i class="fas fa-eye me-2"></i>
+                    Voir les Détails
+                  <% end %>
+                </div>
+              </div>
+            <% else %>
+              <div class="card-body text-center">
+                <i class="fas fa-hourglass-half fa-2x mb-3" style="color: rgba(102, 126, 234, 0.3);"></i>
+                <p style="opacity: 0.7; margin-bottom: 0;">Tournoi en préparation...</p>
+              </div>
+            <% end %>
           </div>
         </div>
-        <div class="col-md-6">
-          <div class="card">
-            <div class="card-body">
-              <h5>🎲 Tournoi Faker</h5>
-              <p class="small text-muted">Équipes et joueurs complètement aléatoires</p>
-              <%= form_with url: generate_faker_tournament_path, method: :post, local: true, class: 'd-inline' do |form| %>
-                <%= form.submit 'Générer Tournoi Faker', class: 'btn btn-primary' %>
-              <% end %>
+      <% end %>
+    </div>
+  <% else %>
+    <div class="text-center animate-on-scroll">
+      <div class="card" style="max-width: 800px; margin: 0 auto;">
+        <div class="card-body py-5">
+          <i class="fas fa-trophy fa-4x mb-4" style="color: rgba(102, 126, 234, 0.3);"></i>
+          <h3 class="mb-3" style="font-weight: bold;">Aucun Tournoi Organisé</h3>
+          <p class="mb-5" style="opacity: 0.8; font-size: 1.1rem;">
+            Créez votre premier tournoi pour voir les équipes s'affronter dans des batailles épiques !
+          </p>
+
+          <div class="row g-4 justify-content-center">
+            <div class="col-md-6">
+              <div class="card" style="border-left: 4px solid #4facfe; height: 100%;">
+                <div class="card-body text-center">
+                  <i class="fas fa-shield-alt fa-3x mb-3" style="color: #4facfe;"></i>
+                  <h5 class="mb-3" style="font-weight: bold; color: #4facfe;">Tournoi Classique</h5>
+                  <p class="mb-4" style="opacity: 0.8;">Équipes avec thèmes fantasy prédéfinis</p>
+                  <%= form_with url: generate_auto_tournament_path, method: :post, local: true, class: 'd-inline' do |form| %>
+                    <%= form.submit 'Générer Tournoi Classique', class: 'btn btn-success btn-lg' %>
+                  <% end %>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="card" style="border-left: 4px solid #f093fb; height: 100%;">
+                <div class="card-body text-center">
+                  <i class="fas fa-dice fa-3x mb-3" style="color: #f093fb;"></i>
+                  <h5 class="mb-3" style="font-weight: bold; color: #f093fb;">Tournoi Faker</h5>
+                  <p class="mb-4" style="opacity: 0.8;">Équipes et joueurs complètement aléatoires</p>
+                  <%= form_with url: generate_faker_tournament_path, method: :post, local: true, class: 'd-inline' do |form| %>
+                    <%= form.submit 'Générer Tournoi Faker', class: 'btn btn-primary btn-lg' %>
+                  <% end %>
+                </div>
+              </div>
             </div>
           </div>
         </div>

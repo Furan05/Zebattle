@@ -1,0 +1,664 @@
+<style>
+  :root {
+      --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      --secondary-gradient: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+      --success-gradient: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+      --dark-bg: #0a0e1a;
+      --card-bg: rgba(255, 255, 255, 0.1);
+  }
+
+  * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+  }
+
+  body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: var(--dark-bg);
+      color: white;
+      overflow-x: hidden;
+  }
+
+  /* Hero Section */
+  .hero-section {
+      min-height: 100vh;
+      background: linear-gradient(135deg, #0a0e1a 0%, #1a1a2e 50%, #16213e 100%);
+      position: relative;
+      display: flex;
+      align-items: center;
+      overflow: hidden;
+  }
+
+  .hero-section::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grid" width="10" height="10" patternUnits="userSpaceOnUse"><path d="M 10 0 L 0 0 0 10" fill="none" stroke="%23ffffff" stroke-width="0.5" opacity="0.1"/></pattern></defs><rect width="100" height="100" fill="url(%23grid)"/></svg>');
+      animation: gridMove 20s linear infinite;
+  }
+
+  @keyframes gridMove {
+      0% { transform: translate(0, 0); }
+      100% { transform: translate(10px, 10px); }
+  }
+
+  .hero-content {
+      z-index: 2;
+      position: relative;
+  }
+
+  .hero-title {
+      font-size: 4rem;
+      font-weight: 900;
+      background: var(--primary-gradient);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      text-align: center;
+      margin-bottom: 1rem;
+      animation: titleGlow 2s ease-in-out infinite alternate;
+  }
+
+  @keyframes titleGlow {
+      from { filter: drop-shadow(0 0 10px rgba(102, 126, 234, 0.3)); }
+      to { filter: drop-shadow(0 0 30px rgba(102, 126, 234, 0.6)); }
+  }
+
+  .hero-subtitle {
+      font-size: 1.5rem;
+      text-align: center;
+      margin-bottom: 2rem;
+      opacity: 0.9;
+  }
+
+  .cta-button {
+      background: var(--primary-gradient);
+      border: none;
+      padding: 15px 40px;
+      border-radius: 50px;
+      font-size: 1.2rem;
+      font-weight: bold;
+      color: white;
+      text-decoration: none;
+      display: inline-block;
+      transition: all 0.3s ease;
+      box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
+      position: relative;
+      overflow: hidden;
+  }
+
+  .cta-button:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 15px 40px rgba(102, 126, 234, 0.5);
+      color: white;
+  }
+
+  .cta-button-secondary {
+      background: var(--secondary-gradient);
+  }
+
+  /* Floating Elements */
+  .floating-element {
+      position: absolute;
+      animation: float 6s ease-in-out infinite;
+  }
+
+  .floating-element:nth-child(1) { top: 20%; left: 10%; animation-delay: 0s; }
+  .floating-element:nth-child(2) { top: 60%; right: 15%; animation-delay: 2s; }
+  .floating-element:nth-child(3) { bottom: 20%; left: 20%; animation-delay: 4s; }
+
+  @keyframes float {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-20px); }
+  }
+
+  /* Stats Section */
+  .stats-section {
+      padding: 80px 0;
+      background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+  }
+
+  .stat-card {
+      background: var(--card-bg);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 20px;
+      padding: 30px;
+      text-align: center;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+      height: 100%;
+  }
+
+  .stat-card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+  }
+
+  .stat-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: var(--primary-gradient);
+  }
+
+  .stat-number {
+      font-size: 3rem;
+      font-weight: 900;
+      background: var(--success-gradient);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 10px;
+  }
+
+  .stat-label {
+      font-size: 1.1rem;
+      opacity: 0.8;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+  }
+
+  /* Features Section */
+  .features-section {
+      padding: 80px 0;
+      background: var(--dark-bg);
+  }
+
+  .feature-card {
+      background: var(--card-bg);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 20px;
+      padding: 40px;
+      height: 100%;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+  }
+
+  .feature-card:hover {
+      transform: translateY(-5px);
+      border-color: rgba(102, 126, 234, 0.5);
+  }
+
+  .feature-icon {
+      font-size: 3rem;
+      background: var(--primary-gradient);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 20px;
+  }
+
+  .feature-title {
+      font-size: 1.5rem;
+      font-weight: bold;
+      margin-bottom: 15px;
+  }
+
+  .feature-description {
+      opacity: 0.8;
+      line-height: 1.6;
+  }
+
+  /* Tournaments Section */
+  .tournaments-section {
+      padding: 80px 0;
+      background: linear-gradient(135deg, #16213e 0%, #1a1a2e 100%);
+  }
+
+  .tournament-card {
+      background: var(--card-bg);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 20px;
+      padding: 30px;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+      height: 100%;
+  }
+
+  .tournament-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+  }
+
+  .tournament-badge {
+      background: var(--secondary-gradient);
+      color: white;
+      padding: 5px 15px;
+      border-radius: 20px;
+      font-size: 0.9rem;
+      font-weight: bold;
+      display: inline-block;
+      margin-bottom: 15px;
+  }
+
+  /* Action Section */
+  .action-section {
+      padding: 80px 0;
+      background: var(--dark-bg);
+      text-align: center;
+  }
+
+  .action-title {
+      font-size: 2.5rem;
+      font-weight: bold;
+      margin-bottom: 20px;
+      background: var(--primary-gradient);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+  }
+
+  .action-buttons {
+      display: flex;
+      gap: 20px;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-top: 30px;
+  }
+
+  .action-btn {
+      padding: 15px 30px;
+      border-radius: 50px;
+      border: none;
+      font-size: 1.1rem;
+      font-weight: bold;
+      text-decoration: none;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+  }
+
+  .action-btn-primary {
+      background: var(--primary-gradient);
+      color: white;
+      box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
+  }
+
+  .action-btn-secondary {
+      background: var(--secondary-gradient);
+      color: white;
+      box-shadow: 0 10px 30px rgba(240, 147, 251, 0.3);
+  }
+
+  .action-btn-success {
+      background: var(--success-gradient);
+      color: white;
+      box-shadow: 0 10px 30px rgba(79, 172, 254, 0.3);
+  }
+
+  .action-btn:hover {
+      transform: translateY(-3px);
+      color: white;
+  }
+
+  /* Responsive Design */
+  @media (max-width: 768px) {
+      .hero-title {
+          font-size: 2.5rem;
+      }
+
+      .hero-subtitle {
+          font-size: 1.2rem;
+      }
+
+      .stat-number {
+          font-size: 2rem;
+      }
+
+      .action-buttons {
+          flex-direction: column;
+          align-items: center;
+      }
+  }
+
+  /* Animations */
+  .animate-on-scroll {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: all 0.6s ease;
+  }
+
+  .animate-on-scroll.visible {
+      opacity: 1;
+      transform: translateY(0);
+  }
+
+  /* Pulse effect for stats */
+  .pulse {
+      animation: pulse 2s infinite;
+  }
+
+  @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+      100% { transform: scale(1); }
+  }
+</style>
+
+<!-- Navigation -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+  <div class="container">
+    <%= link_to root_path, class: "navbar-brand fw-bold" do %>
+      <i class="fas fa-trophy text-warning me-2"></i>
+      Groudonbattle
+    <% end %>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <div class="navbar-nav ms-auto">
+        <%= link_to teams_path, class: "nav-link" do %>
+          <i class="fas fa-users me-1"></i>Équipes
+        <% end %>
+        <%= link_to players_path, class: "nav-link" do %>
+          <i class="fas fa-user-friends me-1"></i>Joueurs
+        <% end %>
+        <%= link_to tournaments_path, class: "nav-link" do %>
+          <i class="fas fa-trophy me-1"></i>Tournois
+        <% end %>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<!-- Hero Section -->
+<section class="hero-section">
+  <div class="floating-element">
+    <i class="fas fa-sword fa-2x" style="color: rgba(102, 126, 234, 0.3);"></i>
+  </div>
+  <div class="floating-element">
+    <i class="fas fa-shield-alt fa-2x" style="color: rgba(240, 147, 251, 0.3);"></i>
+  </div>
+  <div class="floating-element">
+    <i class="fas fa-magic fa-2x" style="color: rgba(79, 172, 254, 0.3);"></i>
+  </div>
+
+  <div class="container">
+    <div class="hero-content">
+      <h1 class="hero-title">GROUDONBATTLE</h1>
+      <p class="hero-subtitle">
+        Créez des équipes légendaires • Organisez des tournois épiques • Dominez l'arène
+      </p>
+      <div class="text-center">
+        <%= link_to tournaments_path, class: "cta-button me-3" do %>
+          <i class="fas fa-play me-2"></i>
+          Commencer l'Aventure
+        <% end %>
+        <%= link_to teams_path, class: "cta-button cta-button-secondary" do %>
+          <i class="fas fa-users me-2"></i>
+          Créer une Équipe
+        <% end %>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Stats Section -->
+<section class="stats-section">
+  <div class="container">
+    <div class="row text-center mb-5">
+      <div class="col-12">
+        <h2 class="animate-on-scroll" style="font-size: 2.5rem; font-weight: bold; margin-bottom: 20px;">
+          L'Arène en Chiffres
+        </h2>
+        <p class="animate-on-scroll" style="font-size: 1.2rem; opacity: 0.8;">
+          Rejoignez une communauté de guerriers passionnés
+        </p>
+      </div>
+    </div>
+    <div class="row g-4">
+      <div class="col-md-4">
+        <div class="stat-card animate-on-scroll pulse">
+          <div class="stat-number"><%= @stats[:total_teams] %></div>
+          <div class="stat-label">Équipes Créées</div>
+          <i class="fas fa-users fa-2x mt-3" style="color: rgba(102, 126, 234, 0.5);"></i>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="stat-card animate-on-scroll pulse" style="animation-delay: 0.2s;">
+          <div class="stat-number"><%= @stats[:total_players] %></div>
+          <div class="stat-label">Guerriers Actifs</div>
+          <i class="fas fa-user-friends fa-2x mt-3" style="color: rgba(240, 147, 251, 0.5);"></i>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="stat-card animate-on-scroll pulse" style="animation-delay: 0.4s;">
+          <div class="stat-number"><%= @stats[:total_tournaments] %></div>
+          <div class="stat-label">Tournois Organisés</div>
+          <i class="fas fa-trophy fa-2x mt-3" style="color: rgba(79, 172, 254, 0.5);"></i>
+        </div>
+      </div>
+    </div>
+    <div class="row g-4 mt-4">
+      <div class="col-md-4">
+        <div class="stat-card animate-on-scroll">
+          <div class="stat-number"><%= @stats[:complete_teams] %></div>
+          <div class="stat-label">Équipes Complètes</div>
+          <i class="fas fa-check-circle fa-2x mt-3" style="color: rgba(40, 167, 69, 0.5);"></i>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="stat-card animate-on-scroll" style="animation-delay: 0.2s;">
+          <div class="stat-number"><%= @stats[:total_matches] %></div>
+          <div class="stat-label">Combats Livrés</div>
+          <i class="fas fa-fire fa-2x mt-3" style="color: rgba(220, 53, 69, 0.5);"></i>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="stat-card animate-on-scroll" style="animation-delay: 0.4s;">
+          <div class="stat-number"><%= @stats[:total_kills] %></div>
+          <div class="stat-label">Kills Totaux</div>
+          <i class="fas fa-skull fa-2x mt-3" style="color: rgba(255, 193, 7, 0.5);"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Features Section -->
+<section class="features-section">
+  <div class="container">
+    <div class="row text-center mb-5">
+      <div class="col-12">
+        <h2 class="animate-on-scroll" style="font-size: 2.5rem; font-weight: bold; margin-bottom: 20px;">
+          Fonctionnalités Épiques
+        </h2>
+        <p class="animate-on-scroll" style="font-size: 1.2rem; opacity: 0.8;">
+          Tout ce dont vous avez besoin pour créer des tournois légendaires
+        </p>
+      </div>
+    </div>
+    <div class="row g-4">
+      <div class="col-md-4">
+        <div class="feature-card animate-on-scroll">
+          <div class="feature-icon">
+            <i class="fas fa-users-cog"></i>
+          </div>
+          <h3 class="feature-title">Gestion d'Équipes</h3>
+          <p class="feature-description">
+            Créez et gérez vos équipes de 11 joueurs avec des rôles spécialisés : Tank, Heal et DPS.
+            Interface intuitive pour optimiser votre composition.
+          </p>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="feature-card animate-on-scroll" style="animation-delay: 0.2s;">
+          <div class="feature-icon">
+            <i class="fas fa-dice"></i>
+          </div>
+          <h3 class="feature-title">Tournois Automatiques</h3>
+          <p class="feature-description">
+            Générez instantanément des tournois complets avec 8 équipes. Mode Classique pour du fantasy
+            ou Mode Faker pour des noms créatifs et surprenants.
+          </p>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="feature-card animate-on-scroll" style="animation-delay: 0.4s;">
+          <div class="feature-icon">
+            <i class="fas fa-chart-line"></i>
+          </div>
+          <h3 class="feature-title">Classements Avancés</h3>
+          <p class="feature-description">
+            Suivez les performances avec des classements détaillés : points, kills marqués/reçus,
+            ratios de victoire et statistiques complètes.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Recent Tournaments -->
+<% if @recent_tournaments.any? %>
+<section class="tournaments-section">
+  <div class="container">
+    <div class="row text-center mb-5">
+      <div class="col-12">
+        <h2 class="animate-on-scroll" style="font-size: 2.5rem; font-weight: bold; margin-bottom: 20px;">
+          Derniers Tournois
+        </h2>
+        <p class="animate-on-scroll" style="font-size: 1.2rem; opacity: 0.8;">
+          Découvrez les récents affrontements épiques
+        </p>
+      </div>
+    </div>
+    <div class="row g-4">
+      <% @recent_tournaments.each_with_index do |tournament, index| %>
+      <div class="col-md-4">
+        <div class="tournament-card animate-on-scroll" style="animation-delay: <%= index * 0.2 %>s;">
+          <div class="tournament-badge">
+            <i class="fas fa-trophy me-1"></i>
+            Terminé
+          </div>
+          <h4 class="mb-3"><%= tournament.name %></h4>
+          <div class="row text-center">
+            <div class="col-6">
+              <div class="stat-number" style="font-size: 1.5rem;"><%= tournament.matches.count %></div>
+              <div class="stat-label" style="font-size: 0.9rem;">Matchs</div>
+            </div>
+            <div class="col-6">
+              <div class="stat-number" style="font-size: 1.5rem;">
+                <%= tournament.matches.sum(:team1_score) + tournament.matches.sum(:team2_score) %>
+              </div>
+              <div class="stat-label" style="font-size: 0.9rem;">Kills</div>
+            </div>
+          </div>
+          <div class="text-center mt-3">
+            <%= link_to tournament_path(tournament), class: "action-btn action-btn-primary" do %>
+              <i class="fas fa-eye me-1"></i>
+              Voir les Résultats
+            <% end %>
+          </div>
+        </div>
+      </div>
+      <% end %>
+    </div>
+  </div>
+</section>
+<% end %>
+
+<!-- Call to Action -->
+<section class="action-section">
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <h2 class="action-title animate-on-scroll">
+          Prêt à Dominer l'Arène ?
+        </h2>
+        <p class="animate-on-scroll" style="font-size: 1.2rem; opacity: 0.8; margin-bottom: 30px;">
+          Rejoignez la bataille dès maintenant et créez votre légende
+        </p>
+        <div class="action-buttons animate-on-scroll">
+          <%= link_to tournaments_path, class: "action-btn action-btn-primary" do %>
+            <i class="fas fa-rocket me-2"></i>
+            Lancer un Tournoi
+          <% end %>
+          <%= link_to new_team_path, class: "action-btn action-btn-secondary" do %>
+            <i class="fas fa-plus me-2"></i>
+            Créer une Équipe
+          <% end %>
+          <%= link_to new_player_path, class: "action-btn action-btn-success" do %>
+            <i class="fas fa-user-plus me-2"></i>
+            Ajouter un Joueur
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer class="bg-dark text-center py-4">
+  <div class="container">
+    <p class="mb-0" style="opacity: 0.7;">
+      &copy; 2025 Groudonbattle - Créé avec ❤️ pour les vrais guerriers
+    </p>
+  </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+  // Animations on scroll
+  const observerOptions = {
+      threshold: 0.1,
+      rootMargin: '0px 0px -50px 0px'
+  };
+
+  const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+          if (entry.isIntersecting) {
+              entry.target.classList.add('visible');
+          }
+      });
+  }, observerOptions);
+
+  document.querySelectorAll('.animate-on-scroll').forEach(el => {
+      observer.observe(el);
+  });
+
+  // Counter animation
+  function animateCounter(element, start, end, duration) {
+      let startTimestamp = null;
+      const step = (timestamp) => {
+          if (!startTimestamp) startTimestamp = timestamp;
+          const progress = Math.min((timestamp - startTimestamp) / duration, 1);
+          const current = Math.floor(progress * (end - start) + start);
+          element.textContent = current;
+          if (progress < 1) {
+              window.requestAnimationFrame(step);
+          }
+      };
+      window.requestAnimationFrame(step);
+  }
+
+  // Animate counters when visible
+  const counterObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+          if (entry.isIntersecting) {
+              const counter = entry.target.querySelector('.stat-number');
+              const finalValue = parseInt(counter.textContent);
+              counter.textContent = '0';
+              animateCounter(counter, 0, finalValue, 2000);
+              counterObserver.unobserve(entry.target);
+          }
+      });
+  }, { threshold: 0.5 });
+
+  document.querySelectorAll('.stat-card').forEach(card => {
+      counterObserver.observe(card);
+  });
+</script>

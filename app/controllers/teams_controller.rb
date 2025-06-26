@@ -34,8 +34,14 @@ class TeamsController < ApplicationController
   end
 
   def destroy
-    @team.destroy
-    redirect_to teams_url, notice: 'Équipe supprimée avec succès.'
+    begin
+      @team.destroy
+      redirect_to teams_url, notice: 'Équipe supprimée avec succès.'
+    rescue ActiveRecord::InvalidForeignKey => e
+      redirect_to teams_url, alert: 'Impossible de supprimer cette équipe car elle est utilisée dans des matchs.'
+    rescue => e
+      redirect_to teams_url, alert: 'Une erreur est survenue lors de la suppression de l\'équipe.'
+    end
   end
 
   private

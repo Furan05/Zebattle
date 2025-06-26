@@ -2,8 +2,8 @@ class Team < ApplicationRecord
   has_many :players, dependent: :destroy
 
   # Relations pour les matchs
-  has_many :team1_matches, class_name: 'Match', foreign_key: 'team1_id'
-  has_many :team2_matches, class_name: 'Match', foreign_key: 'team2_id'
+  has_many :team1_matches, class_name: 'Match', foreign_key: 'team1_id', dependent: :destroy
+  has_many :team2_matches, class_name: 'Match', foreign_key: 'team2_id', dependent: :destroy
 
   validates :name, presence: true, length: { maximum: 50 }, uniqueness: true
   validates :city, presence: true

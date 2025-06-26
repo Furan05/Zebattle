@@ -86,10 +86,10 @@
                   <i class="fas fa-edit me-1"></i>
                   Modifier
                 <% end %>
-                <%= link_to team, method: :delete, confirm: 'Êtes-vous sûr de vouloir supprimer cette équipe ?', class: 'btn btn-danger btn-sm flex-fill' do %>
+                <button type="button" class="btn btn-danger btn-sm flex-fill" onclick="showDeleteModal('<%= team.id %>', '<%= j(team.name) %>')">
                   <i class="fas fa-trash me-1"></i>
                   Supprimer
-                <% end %>
+                </button>
               </div>
             </div>
           </div>
@@ -147,3 +147,80 @@
     </div>
   <% end %>
 </div>
+
+<!-- Modal de confirmation de suppression -->
+<div class="modal fade" id="deleteTeamModal" tabindex="-1" aria-labelledby="deleteTeamModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content" style="background: #1a1a2e; border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 15px; color: white;">
+      <div class="modal-header" style="border-bottom: 1px solid rgba(255, 255, 255, 0.2);">
+        <h5 class="modal-title" id="deleteTeamModalLabel" style="font-weight: bold; color: white;">
+          <i class="fas fa-exclamation-triangle me-2" style="color: #ff6b6b;"></i>
+          Confirmation de Suppression
+        </h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body text-center py-4" style="color: white;">
+        <i class="fas fa-trash-alt fa-4x mb-4" style="color: #ff6b6b;"></i>
+        <h4 class="mb-3" style="font-weight: bold; color: white;">Êtes-vous sûr ?</h4>
+        <p class="mb-4" style="color: rgba(255, 255, 255, 0.8); font-size: 1.1rem;">
+          Vous êtes sur le point de supprimer définitivement l'équipe :
+        </p>
+        <div class="alert alert-danger" style="background: rgba(255, 107, 107, 0.2); border: 1px solid #ff6b6b; color: #ff6b6b;">
+          <strong id="teamNameToDelete" style="font-size: 1.2rem;"></strong>
+        </div>
+        <p style="color: rgba(255, 255, 255, 0.7); font-size: 0.9rem;">
+          <i class="fas fa-exclamation-triangle me-1"></i>
+          Cette action est irréversible. Tous les joueurs de cette équipe seront également supprimés.
+        </p>
+      </div>
+      <div class="modal-footer" style="border-top: 1px solid rgba(255, 255, 255, 0.2); justify-content: center;">
+        <button type="button" class="btn btn-secondary me-3" data-bs-dismiss="modal">
+          <i class="fas fa-times me-2"></i>
+          Non, Annuler
+        </button>
+        <button type="button" class="btn btn-danger" onclick="confirmDelete()">
+          <i class="fas fa-trash me-2"></i>
+          Oui, Supprimer
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  function showDeleteModal(teamId, teamName) {
+    // Simple confirmation dialog
+    if (confirm('Êtes-vous sûr de vouloir supprimer cette équipe ?\n\nÉquipe: ' + teamName + '\n\nCette action est irréversible. Tous les joueurs de cette équipe seront également supprimés.')) {
+      deleteTeam(teamId);
+    }
+  }
+
+  function deleteTeam(teamId) {
+    // Créer un formulaire pour la suppression
+    const form = document.createElement('form');
+    form.method = 'POST';
+    form.action = '/teams/' + teamId;
+    form.style.display = 'none';
+
+    // Ajouter le token CSRF
+    const csrfToken = document.querySelector('meta[name="csrf-token"]');
+    if (csrfToken) {
+      const csrfInput = document.createElement('input');
+      csrfInput.type = 'hidden';
+      csrfInput.name = 'authenticity_token';
+      csrfInput.value = csrfToken.getAttribute('content');
+      form.appendChild(csrfInput);
+    }
+
+    // Ajouter la méthode DELETE
+    const methodInput = document.createElement('input');
+    methodInput.type = 'hidden';
+    methodInput.name = '_method';
+    methodInput.value = 'delete';
+    form.appendChild(methodInput);
+
+    // Ajouter le formulaire au body et le soumettre
+    document.body.appendChild(form);
+    form.submit();
+  }
+</script>

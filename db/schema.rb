@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2025_06_23_195825) do
+ActiveRecord::Schema[7.1].define(version: 2025_06_26_134649) do
   create_table "matches", charset: "utf8mb4", collation: "utf8mb4_uca1400_ai_ci", force: :cascade do |t|
     t.bigint "tournament_id", null: false
     t.bigint "team1_id", null: false
@@ -48,6 +48,7 @@ ActiveRecord::Schema[7.1].define(version: 2025_06_23_195825) do
     t.string "status", default: "pending"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["name"], name: "index_tournaments_on_name", unique: true
   end
 
   add_foreign_key "matches", "teams", column: "team1_id"

@@ -2,12 +2,13 @@ class Tournament < ApplicationRecord
   has_many :matches, dependent: :destroy
   has_many :teams, -> { distinct }, through: :matches, source: :team1
 
-  validates :name, presence: true
+  validates :name, presence: true, uniqueness: true
   validates :status, inclusion: { in: %w[pending completed] }
 
   def self.generate_auto_tournament
+    tournament_id = Time.current.strftime('%Y%m%d%H%M%S')
     tournament = create!(
-      name: "Tournoi Auto #{Time.current.strftime('%Y-%m-%d %H:%M')}"
+      name: "Tournoi Auto #{Time.current.strftime('%Y-%m-%d %H:%M:%S')}"
     )
 
     team_names = [
@@ -19,7 +20,7 @@ class Tournament < ApplicationRecord
 
     8.times do |i|
       team = Team.create!(
-        name: team_names[i],
+        name: "#{team_names[i]} #{tournament_id}",
         city: cities[i]
       )
 
@@ -39,17 +40,21 @@ class Tournament < ApplicationRecord
   end
 
   def self.generate_faker_tournament
+    tournament_id = Time.current.strftime('%Y%m%d%H%M%S')
     tournament = create!(
       name: "Tournoi #{Faker::Game.title} #{Time.current.strftime('%Y-%m-%d %H:%M')}"
     )
 
     8.times do |i|
-      team_name = case rand(4)
-                  when 0 then "#{Faker::Creature::Animal.name.capitalize} #{Faker::Fantasy::Tolkien.location}"
-                  when 1 then "#{Faker::Games::LeagueOfLegends.champion}s de #{Faker::Fantasy::Tolkien.location}"
-                  when 2 then "#{Faker::Superhero.name.split.first} #{Faker::Color.color_name.capitalize}"
-                  else "#{Faker::Ancient.god} #{Faker::Military.army_rank.capitalize}s"
-                  end
+      base_team_name = case rand(4)
+                       when 0 then "#{Faker::Creature::Animal.name.capitalize} #{Faker::Fantasy::Tolkien.location}"
+                       when 1 then "#{Faker::Games::LeagueOfLegends.champion}s de #{Faker::Fantasy::Tolkien.location}"
+                       when 2 then "#{Faker::Superhero.name.split.first} #{Faker::Color.color_name.capitalize}"
+                       else "#{Faker::Ancient.god} #{Faker::Military.army_rank.capitalize}s"
+                       end
+
+      # Ensure uniqueness by adding tournament_id
+      team_name = "#{base_team_name} #{tournament_id}"
 
       team = Team.create!(
         name: team_name,
@@ -80,7 +85,8 @@ class Tournament < ApplicationRecord
   end
 
   def generate_matches(teams)
-    teams.combination(2).each do |team1, team2|
+    teams_array = teams.to_a
+    teams_array.combination(2).each do |team1, team2|
       matches.create!(
         team1: team1,
         team2: team2,

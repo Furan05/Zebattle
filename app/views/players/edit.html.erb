@@ -32,8 +32,15 @@
 
         <div class="col-12">
           <%= form.submit 'Mettre à jour', class: 'btn btn-success' %>
-          <%= link_to 'Voir l\'équipe', @team, class: 'btn btn-info' %>
+          <%= link_to @team, class: 'btn btn-info' do %>
+            <i class="fas fa-eye me-2"></i>
+            Voir l'équipe
+          <% end %>
           <%= link_to 'Annuler', @team, class: 'btn btn-secondary' %>
+          <%= link_to '#', class: 'btn btn-danger', onclick: "showDeletePlayerModal('#{@player.id}', '#{j(@player.name)}'); return false;" do %>
+            <i class="fas fa-trash me-2"></i>
+            Supprimer le joueur
+          <% end %>
         </div>
       <% end %>
     </div>
@@ -51,3 +58,71 @@
     </div>
   </div>
 </div>
+
+<style>
+  .btn {
+    padding: 0.5rem 1.5rem !important;
+    border-radius: 50px !important;
+    font-weight: 500 !important;
+    transition: all 0.3s ease !important;
+    transform: translateY(0) !important;
+  }
+
+  .btn:hover {
+    transform: translateY(-2px) !important;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15) !important;
+  }
+
+  .btn-info:hover {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+    border-color: transparent !important;
+  }
+
+  .btn-secondary:hover {
+    background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%) !important;
+    border-color: transparent !important;
+  }
+
+  .btn-danger:hover {
+    background: linear-gradient(135deg, #ff6b6b 0%, #ee5a52 100%) !important;
+    border-color: transparent !important;
+  }
+</style>
+
+<script>
+  function showDeletePlayerModal(playerId, playerName) {
+    // Simple confirmation dialog
+    if (confirm('Êtes-vous sûr de vouloir supprimer ce joueur ?\n\nJoueur: ' + playerName + '\n\nCette action est irréversible.')) {
+      deletePlayer(playerId);
+    }
+  }
+
+  function deletePlayer(playerId) {
+    // Créer un formulaire pour la suppression
+    const form = document.createElement('form');
+    form.method = 'POST';
+    form.action = '/teams/<%= @team.id %>/players/' + playerId;
+    form.style.display = 'none';
+
+    // Ajouter le token CSRF
+    const csrfToken = document.querySelector('meta[name="csrf-token"]');
+    if (csrfToken) {
+      const csrfInput = document.createElement('input');
+      csrfInput.type = 'hidden';
+      csrfInput.name = 'authenticity_token';
+      csrfInput.value = csrfToken.getAttribute('content');
+      form.appendChild(csrfInput);
+    }
+
+    // Ajouter la méthode DELETE
+    const methodInput = document.createElement('input');
+    methodInput.type = 'hidden';
+    methodInput.name = '_method';
+    methodInput.value = 'delete';
+    form.appendChild(methodInput);
+
+    // Ajouter le formulaire au body et le soumettre
+    document.body.appendChild(form);
+    form.submit();
+  }
+</script>

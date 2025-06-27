@@ -9,6 +9,10 @@
       Organisez des batailles épiques et couronnez les champions
     </p>
     <div class="animate-on-scroll">
+      <%= link_to new_tournament_path, class: 'btn btn-warning me-2', title: 'Créer un tournoi personnalisé avec vos équipes' do %>
+        <i class="fas fa-plus me-2"></i>
+        Tournoi Personnalisé
+      <% end %>
       <%= form_with url: generate_auto_tournament_path, method: :post, local: true, class: 'd-inline me-2' do |form| %>
         <%= form.submit 'Tournoi Classique', class: 'btn btn-success', title: 'Génération avec noms prédéfinis' %>
       <% end %>

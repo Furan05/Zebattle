@@ -13,6 +13,36 @@ class TournamentsController < ApplicationController
     @matches = @tournament.matches.includes(:team1, :team2).order(:created_at)
   end
 
+  def new
+    @tournament = Tournament.new
+    @teams = Team.joins(:players)
+                 .group('teams.id')
+                 .having('COUNT(players.id) >= 11')
+                 .order(:name)
+  end
+
+  def create
+    @tournament = Tournament.new(tournament_params)
+
+    if @tournament.save
+      selected_teams = Team.where(id: params[:team_ids]).limit(8)
+
+      if selected_teams.count >= 2
+        @tournament.generate_matches(selected_teams)
+        redirect_to @tournament, notice: "🏆 Tournoi créé avec succès avec #{selected_teams.count} équipes !"
+      else
+        @tournament.destroy
+        redirect_to new_tournament_path, alert: "Vous devez sélectionner au moins 2 équipes pour créer un tournoi."
+      end
+    else
+      @teams = Team.joins(:players)
+                   .group('teams.id')
+                   .having('COUNT(players.id) >= 11')
+                   .order(:name)
+      render :new, status: :unprocessable_entity
+    end
+  end
+
   def generate_auto
     begin
       @tournament = Tournament.generate_auto_tournament

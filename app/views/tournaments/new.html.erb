@@ -1,0 +1,113 @@
+<% content_for :title, "Nouveau Tournoi" %>
+
+<div class="container mt-4">
+  <div class="row justify-content-center">
+    <div class="col-md-8">
+      <div class="card">
+        <div class="card-header bg-primary text-white">
+          <h3 class="mb-0">🏆 Créer un Nouveau Tournoi</h3>
+        </div>
+        <div class="card-body">
+          <%= form_with model: @tournament, local: true do |form| %>
+            <% if @tournament.errors.any? %>
+              <div class="alert alert-danger">
+                <h4><%= pluralize(@tournament.errors.count, "erreur") %> :</h4>
+                <ul class="mb-0">
+                  <% @tournament.errors.full_messages.each do |message| %>
+                    <li><%= message %></li>
+                  <% end %>
+                </ul>
+              </div>
+            <% end %>
+
+            <div class="mb-3">
+              <%= form.label :name, "Nom du tournoi", class: "form-label" %>
+              <%= form.text_field :name, class: "form-control", placeholder: "Ex: Tournoi d'été 2025" %>
+            </div>
+
+            <div class="mb-4">
+              <label class="form-label">Sélectionner les équipes (minimum 2, maximum 8)</label>
+              <div class="alert alert-info">
+                <small>Seules les équipes avec au moins 11 joueurs peuvent participer à un tournoi.</small>
+              </div>
+
+              <% if @teams.any? %>
+                <div class="row">
+                  <% @teams.each do |team| %>
+                    <div class="col-md-6 mb-2">
+                      <div class="form-check">
+                        <%= check_box_tag "team_ids[]", team.id, false, class: "form-check-input", id: "team_#{team.id}" %>
+                        <%= label_tag "team_#{team.id}", class: "form-check-label" do %>
+                          <strong><%= team.name %></strong> (<%= team.city %>)
+                          <br><small class="text-muted"><%= team.player_count %> joueurs</small>
+                        <% end %>
+                      </div>
+                    </div>
+                  <% end %>
+                </div>
+              <% else %>
+                <div class="alert alert-warning">
+                  <p class="mb-0">Aucune équipe complète (11 joueurs) n'est disponible pour créer un tournoi.</p>
+                  <%= link_to "Créer une nouvelle équipe", new_team_path, class: "btn btn-sm btn-outline-primary mt-2" %>
+                </div>
+              <% end %>
+            </div>
+
+            <div class="d-flex justify-content-between">
+              <%= link_to "Annuler", tournaments_path, class: "btn btn-secondary" %>
+              <% if @teams.any? %>
+                <%= form.submit "Créer le Tournoi", class: "btn btn-primary" %>
+              <% end %>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const checkboxes = document.querySelectorAll('input[name="team_ids[]"]');
+  const submitButton = document.querySelector('input[type="submit"]');
+
+  function updateSubmitButton() {
+    const checkedCount = document.querySelectorAll('input[name="team_ids[]"]:checked').length;
+    if (submitButton) {
+      if (checkedCount < 2) {
+        submitButton.disabled = true;
+        submitButton.textContent = 'Sélectionnez au moins 2 équipes';
+      } else if (checkedCount > 8) {
+        submitButton.disabled = true;
+        submitButton.textContent = 'Maximum 8 équipes';
+      } else {
+        submitButton.disabled = false;
+        submitButton.textContent = `Créer le Tournoi (${checkedCount} équipes)`;
+      }
+    }
+  }
+
+  checkboxes.forEach(checkbox => {
+    checkbox.addEventListener('change', function() {
+      const checkedCount = document.querySelectorAll('input[name="team_ids[]"]:checked').length;
+
+      if (checkedCount >= 8) {
+        checkboxes.forEach(cb => {
+          if (!cb.checked) {
+            cb.disabled = true;
+          }
+        });
+      } else {
+        checkboxes.forEach(cb => {
+          cb.disabled = false;
+        });
+      }
+
+      updateSubmitButton();
+    });
+  });
+
+  // Initial check
+  updateSubmitButton();
+});
+</script>

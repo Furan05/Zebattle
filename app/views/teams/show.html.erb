@@ -48,8 +48,9 @@
                       <td><%= position_badge(player.position) %></td>
                       <td>
                         <%= link_to 'Modifier', edit_team_player_path(@team, player), class: 'btn btn-sm btn-warning' %>
-                        <%= link_to 'Supprimer', team_player_path(@team, player), method: :delete,
-                                    confirm: 'Êtes-vous sûr?', class: 'btn btn-sm btn-danger' %>
+                        <%= link_to 'Supprimer', team_player_path(@team, player),
+                                    data: { turbo_method: :delete, turbo_confirm: 'Êtes-vous sûr de vouloir supprimer ce joueur?' },
+                                    class: 'btn btn-sm btn-danger' %>
                       </td>
                     </tr>
                   <% end %>

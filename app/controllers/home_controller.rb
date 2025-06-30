@@ -18,7 +18,7 @@ class HomeController < ApplicationController
                                    .order(created_at: :desc)
                                    .limit(3)
 
-    # Top équipes basé sur les victoires (si on a des données)
+    # Top équipes basé sur les wins
     if Match.exists?
       @top_teams = Team.joins('LEFT JOIN matches m1 ON teams.id = m1.team1_id')
                       .joins('LEFT JOIN matches m2 ON teams.id = m2.team2_id')

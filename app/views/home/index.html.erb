@@ -353,7 +353,7 @@
   <div class="container">
     <%= link_to root_path, class: "navbar-brand fw-bold" do %>
       <i class="fas fa-trophy text-warning me-2"></i>
-      Groudonbattle
+      Les Tournois de Hoen
     <% end %>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
       <span class="navbar-toggler-icon"></span>
@@ -374,7 +374,7 @@
   </div>
 </nav>
 
-<!-- Hero Section -->
+
 <section class="hero-section">
   <div class="floating-element">
     <i class="fas fa-sword fa-2x" style="color: rgba(102, 126, 234, 0.3);"></i>
@@ -388,7 +388,7 @@
 
   <div class="container">
     <div class="hero-content">
-      <h1 class="hero-title">GROUDONBATTLE</h1>
+      <h1 class="hero-title"> tournoi de Hoen</h1>
       <p class="hero-subtitle">
         Créez des équipes légendaires • Organisez des tournois épiques • Dominez l'arène
       </p>
@@ -468,7 +468,7 @@
   </div>
 </section>
 
-<!-- Features Section -->
+
 <section class="features-section">
   <div class="container">
     <div class="row text-center mb-5">
@@ -522,7 +522,7 @@
   </div>
 </section>
 
-<!-- Recent Tournaments -->
+
 <% if @recent_tournaments.any? %>
 <section class="tournaments-section">
   <div class="container">
@@ -571,7 +571,7 @@
 </section>
 <% end %>
 
-<!-- Call to Action -->
+
 <section class="action-section">
   <div class="container">
     <div class="row">
@@ -601,7 +601,7 @@
   </div>
 </section>
 
-<!-- Footer -->
+
 <footer class="bg-dark text-center py-4">
   <div class="container">
     <p class="mb-0" style="opacity: 0.7;">
@@ -612,7 +612,7 @@
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script>
-  // Animations on scroll
+
   const observerOptions = {
       threshold: 0.1,
       rootMargin: '0px 0px -50px 0px'
@@ -630,7 +630,7 @@
       observer.observe(el);
   });
 
-  // Counter animation
+
   function animateCounter(element, start, end, duration) {
       let startTimestamp = null;
       const step = (timestamp) => {
@@ -645,7 +645,7 @@
       window.requestAnimationFrame(step);
   }
 
-  // Animate counters when visible
+
   const counterObserver = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
           if (entry.isIntersecting) {

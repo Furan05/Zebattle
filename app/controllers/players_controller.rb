@@ -2,20 +2,20 @@ class PlayersController < ApplicationController
   before_action :set_team, only: [:show, :edit, :update, :destroy]
   before_action :set_player, only: [:show, :edit, :update, :destroy]
 
-  # Routes globales (sans équipe spécifique)
+
   def index
     @players = Player.includes(:team).order(:name)
     @teams = Team.all.order(:name)
   end
 
   def new
-    # Route globale : /players/new
+
     if params[:team_id].blank?
       @player = Player.new
       @teams = Team.all.order(:name)
       render :global_new
     else
-      # Route imbriquée : /teams/:team_id/players/new
+
       @team = Team.find(params[:team_id])
       @player = @team.players.build
 
@@ -28,7 +28,7 @@ class PlayersController < ApplicationController
   end
 
   def create
-    # Route globale : POST /players
+
     if params[:team_id].blank?
       @player = Player.new(global_player_params)
       @teams = Team.all.order(:name)
@@ -51,7 +51,7 @@ class PlayersController < ApplicationController
     end
   end
 
-  # Routes pour les équipes spécifiques (existantes)
+  
   def show
   end
 

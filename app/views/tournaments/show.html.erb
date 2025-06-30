@@ -14,7 +14,7 @@
     </div>
   </div>
 
-  <!-- Statut du tournoi -->
+
   <div class="alert alert-<%= @tournament.status == 'completed' ? 'success' : 'warning' %> mb-4">
     <div class="d-flex justify-content-between align-items-center">
       <div>
@@ -32,7 +32,7 @@
   </div>
 
   <% if @tournament.status == 'completed' %>
-    <!-- CLASSEMENT FINAL (Format demandé dans les consignes) -->
+    
     <div class="card mb-4">
       <div class="card-header">
         <h3 class="mb-0">🏅 Classement Final</h3>

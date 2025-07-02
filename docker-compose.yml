@@ -1,0 +1,67 @@
+version: '3.8'
+
+services:
+  db:
+    image: mariadb:10.11
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: root_password
+      MYSQL_DATABASE: groudonbattle_development
+      MYSQL_USER: rails_user
+      MYSQL_PASSWORD: password123
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+    ports:
+      - "3307:3306"
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      timeout: 20s
+      retries: 10
+
+  web:
+    build: .
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    environment:
+      RAILS_ENV: development
+      DATABASE_URL: mysql2://rails_user:password123@db:3306/groudonbattle_development
+      RAILS_MASTER_KEY: ${RAILS_MASTER_KEY}
+    volumes:
+      - .:/rails
+      - bundle_cache:/usr/local/bundle
+    depends_on:
+      db:
+        condition: service_healthy
+    command: >
+      bash -c "
+        bundle install &&
+        bin/rails db:create db:migrate db:seed &&
+        bin/rails server -b 0.0.0.0
+      "
+
+  # Service pour les tests
+  test:
+    build: .
+    environment:
+      RAILS_ENV: test
+      DATABASE_URL: mysql2://rails_user:password123@db:3306/groudonbattle_test
+    volumes:
+      - .:/rails
+      - bundle_cache:/usr/local/bundle
+    depends_on:
+      db:
+        condition: service_healthy
+    command: >
+      bash -c "
+        bundle install &&
+        bin/rails db:create db:migrate RAILS_ENV=test &&
+        bin/rails test
+      "
+    profiles:
+      - test
+
+volumes:
+  mysql_data:
+  bundle_cache:

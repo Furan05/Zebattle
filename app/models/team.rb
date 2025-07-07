@@ -51,4 +51,12 @@ class Team < ApplicationRecord
   def name_with_info
     "#{name} (#{city}) - #{player_count}/11 joueurs#{' - COMPLÈTE' if full?}"
   end
+
+  def missing_players_count
+    11 - players.count
+  end
+
+  def incomplete?
+    !full?
+  end
 end

@@ -3,6 +3,9 @@ Rails.application.routes.draw do
 
   resources :teams do
     resources :players, except: [:index]
+    member do
+      post :complete_team
+    end
   end
 
   # Routes globales pour les joueurs

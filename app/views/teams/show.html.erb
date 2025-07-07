@@ -27,7 +27,16 @@
         <div class="card-header d-flex justify-content-between">
           <h5>Joueurs</h5>
           <% unless @team.full? %>
-            <%= link_to 'Ajouter un joueur', new_team_player_path(@team), class: 'btn btn-primary btn-sm' %>
+            <div>
+              <%= link_to 'Ajouter un joueur', new_team_player_path(@team), class: 'btn btn-primary btn-sm' %>
+              <%= button_to "Compléter automatiquement (#{@team.missing_players_count} joueur#{'s' if @team.missing_players_count > 1})",
+                            complete_team_team_path(@team),
+                            method: :post,
+                            data: {
+                              turbo_confirm: "Êtes-vous sûr de vouloir générer automatiquement #{@team.missing_players_count} joueur#{'s' if @team.missing_players_count > 1} pour compléter cette équipe ?"
+                            },
+                            class: 'btn btn-success btn-sm ms-2' %>
+            </div>
           <% end %>
         </div>
         <div class="card-body">

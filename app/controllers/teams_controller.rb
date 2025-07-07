@@ -1,5 +1,5 @@
 class TeamsController < ApplicationController
-  before_action :set_team, only: [:show, :edit, :update, :destroy]
+  before_action :set_team, only: [:show, :edit, :update, :destroy, :complete_team]
 
   def index
     @teams = Team.all.order(:name)
@@ -44,6 +44,30 @@ class TeamsController < ApplicationController
     end
   end
 
+  def complete_team
+    if @team.full?
+      redirect_to @team, alert: 'Cette équipe est déjà complète.'
+      return
+    end
+
+    missing_count = @team.missing_players_count
+
+    begin
+      ActiveRecord::Base.transaction do
+        missing_count.times do
+          @team.players.create!(
+            name: generate_random_name,
+            position: random_position
+          )
+        end
+      end
+
+      redirect_to @team, notice: "#{missing_count} joueur#{'s' if missing_count > 1} #{missing_count > 1 ? 'ont été ajoutés' : 'a été ajouté'} automatiquement à l'équipe."
+    rescue => e
+      redirect_to @team, alert: 'Une erreur est survenue lors de la génération des joueurs.'
+    end
+  end
+
   private
 
   def set_team
@@ -52,5 +76,28 @@ class TeamsController < ApplicationController
 
   def team_params
     params.require(:team).permit(:name, :city)
+  end
+
+  def generate_random_name
+    first_names = [
+      'Alexandre', 'Baptiste', 'Clément', 'Damien', 'Étienne', 'Fabien', 'Gabriel', 'Hugo',
+      'Julien', 'Kevin', 'Louis', 'Martin', 'Nicolas', 'Olivier', 'Pierre', 'Quentin',
+      'Romain', 'Sébastien', 'Thomas', 'Vincent', 'William', 'Xavier', 'Yves', 'Zacharie',
+      'Amélie', 'Béatrice', 'Camille', 'Delphine', 'Émilie', 'Fanny', 'Gabrielle', 'Hélène',
+      'Isabelle', 'Julie', 'Karine', 'Laure', 'Marie', 'Nathalie', 'Océane', 'Pauline',
+      'Quitterie', 'Rachel', 'Sophie', 'Tiphaine', 'Ursula', 'Valérie', 'Wendy', 'Xena',
+      'Yasmine', 'Zoé', 'Adrien', 'Bastien', 'Céline', 'David', 'Elodie', 'Florian',
+      'Gaëlle', 'Henri', 'Inès', 'Jérôme', 'Kévin', 'Luc', 'Maxime', 'Nathan'
+    ]
+
+    # Générer un nom unique pour cette équipe
+    loop do
+      name = first_names.sample
+      break name unless @team.players.exists?(name: name)
+    end
+  end
+
+  def random_position
+    Player::POSITIONS.sample
   end
 end
